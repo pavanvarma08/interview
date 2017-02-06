@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><title>Interview</title></head>
+<body>
+
+</body>
+</html>
+<script>
+    function formatInterview(from, duration) {
+        var isoformat = {
+            "Y": 365 * 24 * 3600000,
+            "D": 24 * 3600000,
+            "H": 3600000,
+            "M": 60000,
+            "S": 1000
+        };
+        var isotime = 0;
+        var currentIndex=duration.indexOf('P')+1;
+
+        if (duration.indexOf('Y') != -1) {
+            isotime = isoformat['Y'] * duration.substring(currentIndex, duration.indexOf('Y'));
+            currentIndex = duration.indexOf('Y') + 1;
+        }
+        if (duration.indexOf('D') != -1) {
+            isotime += isoformat['D'] * duration.substring(currentIndex, duration.indexOf('D'));
+        }
+        currentIndex=duration.indexOf('T')+1;
+        if (duration.indexOf('H') != -1) {
+            isotime += isoformat['H'] * duration.substring(duration.indexOf('T') + 1, duration.indexOf('H'));
+            currentIndex = duration.indexOf('H') + 1;
+        }
+        if (duration.indexOf('M') != -1) {
+            isotime += isoformat['M'] * duration.substring(currentIndex, duration.indexOf('M'));
+            currentIndex = duration.indexOf('M') + 1;
+        }
+        if (duration.indexOf('S') != -1) {
+            isotime += isoformat['S'] * duration.substring(currentIndex, duration.indexOf('S'));
+        }
+        var day=from.toISOString().substring(0, 10);
+        var startTime= from.toISOString().substring(11, 16);
+        from.setTime(from.getTime() + isotime);
+        var endTime = from.toISOString().substring(11, 16);
+        if (from.toISOString().substring(0, 10) == day) {
+            return(day + " at " + startTime +
+            " to " + endTime);
+        }
+        else{
+            return(day + " at " + startTime +
+            " to "+ from.toISOString().substring(0, 10)+ " at "+ endTime);
+        }
+    }
+    console.log(
+        'Thank you for your application! We look forward to meeting you for an interview ' +
+        formatInterview(new Date(2017, 1, 8, 13, 30), "PT30M")
+    );
+</script>
